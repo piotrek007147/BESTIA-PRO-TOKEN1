@@ -25,6 +25,7 @@ def generate_affiliate_url(url: str) -> str | None:
         print("⚠️  To nie wygląda na URL produktu:", url)
 
 
+
 # fallback: html landing-page
 try:
         html = requests.get(url, headers=HEADERS, timeout=8).text
