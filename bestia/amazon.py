@@ -38,9 +38,6 @@ try:
 except requests.RequestException:
         pass
         return None
-    p = urlparse(url)
-    q = parse_qs(p.query); q["tag"] = TAG
-    return urlunparse(p._replace(query=urlencode(q, doseq=True)))
 
 def run_amazon_bot() -> None:
     if not TAG:
