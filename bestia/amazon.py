@@ -26,13 +26,13 @@ def generate_affiliate_url(url: str) -> str | None:
 
 # fallback: html landing-page
 try:
-    html = requests.get(url, headers=HEADERS, timeout=8).text
-    m = LANDING_RE.search(html)
-    if m:
+        html = requests.get(url, headers=HEADERS, timeout=8).text
+        m = LANDING_RE.search(html)
+        if m:
         asin = m.group(0)
         return f"https://www.amazon.com/dp/{asin}?tag={TAG}"
 except requests.RequestException:
-    pass
+        pass
         return None
     p = urlparse(url)
     q = parse_qs(p.query); q["tag"] = TAG
