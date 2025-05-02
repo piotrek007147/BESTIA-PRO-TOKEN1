@@ -7,6 +7,7 @@ load_dotenv()
 TAG = os.getenv("AMZ_TAG")                 # np. twojnick-21
 HEADERS = {"User-Agent": "Mozilla/5.0 BESTIA/1.0"}
 PRODUCT_RE = re.compile(r"/dp/([A-Z0-9]{10})")
+LANDING_RE = re.compile(r"[A-Z0-9]{10}")  # ASIN w HTML
 
 def generate_affiliate_url(url: str) -> str | None:
     if "amzn.to" in url:
@@ -22,6 +23,16 @@ def generate_affiliate_url(url: str) -> str | None:
             print("⚠️  Nie udało się rozwinąć:", url); return None
     if not PRODUCT_RE.search(url):
         print("⚠️  To nie wygląda na URL produktu:", url)
+
+# fallback: html landing-page
+try:
+    html = requests.get(url, headers=HEADERS, timeout=8).text
+    m = LANDING_RE.search(html)
+    if m:
+        asin = m.group(0)
+        return f"https://www.amazon.com/dp/{asin}?tag={TAG}"
+except requests.RequestException:
+    pass
         return None
     p = urlparse(url)
     q = parse_qs(p.query); q["tag"] = TAG
