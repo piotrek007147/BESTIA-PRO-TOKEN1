@@ -9,13 +9,17 @@ HEADERS = {"User-Agent": "Mozilla/5.0 BESTIA/1.0"}
 PRODUCT_RE = re.compile(r"/dp/([A-Z0-9]{10})")
 
 def generate_affiliate_url(url: str) -> str | None:
-    if "amzn.to" in url:                  # rozwiń skrócony link
+    if "amzn.to" in url:
+
         try:
-            url = requests.head(url, allow_redirects=True, timeout=8,
-                                 headers=HEADERS).url
+
+            url = requests.get(url, headers=HEADERS, timeout=8, stream=True,
+
+                               allow_redirects=True).url
+
         except requests.RequestException:
-            print("⚠️  Nie udało się rozwinąć:", url)
-            return None
+
+            print("⚠️  Nie udało się rozwinąć:", url); return None
     if not PRODUCT_RE.search(url):
         print("⚠️  To nie wygląda na URL produktu:", url)
         return None
