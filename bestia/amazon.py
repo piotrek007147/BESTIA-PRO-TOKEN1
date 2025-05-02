@@ -26,20 +26,15 @@ def generate_affiliate_url(url: str) -> str | None:
 
 
 
+
 # fallback: html landing-page
 try:
-        html = requests.get(url, headers=HEADERS, timeout=8).text
-        m = LANDING_RE.search(html)
-        if m:
-                asin = m.group(0)
-                p = urlparse(f"https://www.amazon.com/dp/{asin}")
-                q = {"tag": TAG}
-        print("❌  Brak AMZ_TAG w .env"); return
-    try:
-        urls = [l.strip() for l in open("products.txt") if l.strip()]
-    except FileNotFoundError:
-        print("❌  Dodaj plik products.txt z linkami"); return
-    print("🛒  Generuję linki dla tagu:", TAG)
-    for u in urls:
-        aff = generate_affiliate_url(u)
-        print("✅" if aff else "❌", aff or u)
+    html = requests.get(url, headers=HEADERS, timeout=8).text
+    m = LANDING_RE.search(html)
+    if m:
+        asin = m.group(0)
+        p2 = urlparse(f"https://www.amazon.com/dp/{asin}")
+        q  = {"tag": TAG}
+        return urlunparse(p2._replace(query=urlencode(q, doseq=True)))
+except requests.RequestException:
+    pass
