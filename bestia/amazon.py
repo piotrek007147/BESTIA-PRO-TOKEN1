@@ -24,13 +24,16 @@ def generate_affiliate_url(url: str) -> str | None:
     if not PRODUCT_RE.search(url):
         print("⚠️  To nie wygląda na URL produktu:", url)
 
+
 # fallback: html landing-page
 try:
         html = requests.get(url, headers=HEADERS, timeout=8).text
         m = LANDING_RE.search(html)
         if m:
-        asin = m.group(0)
-        return f"https://www.amazon.com/dp/{asin}?tag={TAG}"
+                asin = m.group(0)
+                p = urlparse(f"https://www.amazon.com/dp/{asin}")
+                q = {"tag": TAG}
+                return urlunparse(p._replace(query=urlencode(q, doseq=True)))
 except requests.RequestException:
         pass
         return None
