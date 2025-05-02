@@ -34,13 +34,6 @@ try:
                 asin = m.group(0)
                 p = urlparse(f"https://www.amazon.com/dp/{asin}")
                 q = {"tag": TAG}
-                return urlunparse(p._replace(query=urlencode(q, doseq=True)))
-except requests.RequestException:
-        pass
-        return None
-
-def run_amazon_bot() -> None:
-    if not TAG:
         print("❌  Brak AMZ_TAG w .env"); return
     try:
         urls = [l.strip() for l in open("products.txt") if l.strip()]
