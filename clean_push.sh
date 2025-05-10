@@ -1,6 +1,5 @@
-#!/data/data/com.termux/files/usr/bin/bash
-
-echo "[1] Usuwam poufne dane z historii..."
+#!/bin/bash
+echo "[1] Usuwam dane z historii..."
 git filter-branch --force --index-filter \
   "git rm --cached --ignore-unmatch WARSTWY/skrypt.sh" \
   --prune-empty --tag-name-filter cat -- --all
