@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# 1. Dodaj wszystkie zmiany
+git add .
+
+# 2. Wykonaj czysty commit
+git commit -m "Czysty commit bez tokenów"
+
+# 3. Wyczyść historię (usuwa plik zawierający token)
+git filter-branch --force --index-filter \
+  "git rm --cached --ignore-unmatch WARSTWY/skrypt.sh" \
+  --prune-empty --tag-name-filter cat -- --all
+
+# 4. Wypchnij zmiany i ustaw gałąź upstream
+git push --force --set-upstream origin master
